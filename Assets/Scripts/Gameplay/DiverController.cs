@@ -13,6 +13,9 @@ namespace Ballast.Gameplay
         [SerializeField] private float lateralForce = 30f;
         [SerializeField] private float maxLateralSpeed = 5f;
 
+        [Header("Inertia")]
+        [SerializeField, Range(0f, 10f)] private float linearDamping = 4f;
+
         private Rigidbody rb;
         private InputReader input;
 
@@ -22,6 +25,8 @@ namespace Ballast.Gameplay
             input = GetComponent<InputReader>();
 
             rb.useGravity = false;
+            rb.linearDamping = linearDamping;
+            rb.angularDamping = 5f;
             rb.constraints = RigidbodyConstraints.FreezeRotation;
             rb.interpolation = RigidbodyInterpolation.Interpolate;
             rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
