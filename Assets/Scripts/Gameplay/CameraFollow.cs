@@ -38,7 +38,6 @@ namespace Ballast.Gameplay
             float yNext = Mathf.SmoothDamp(current.y, desiredPos.y, ref verticalVel, verticalSmoothTime);
 
             transform.position = new Vector3(horizontalNext.x, yNext, horizontalNext.z);
-            transform.LookAt(target);
         }
     }
 }
