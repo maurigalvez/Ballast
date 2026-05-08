@@ -16,6 +16,14 @@ namespace Ballast.Gameplay
         [Header("Inertia")]
         [SerializeField, Range(0f, 10f)] private float linearDamping = 4f;
 
+        [Header("Weight coupling")]
+        [SerializeField]
+        private AnimationCurve weightMovementMultiplier = new AnimationCurve(
+            new Keyframe(0f, 1f),
+            new Keyframe(5f, 0.6f),
+            new Keyframe(10f, 0.3f)
+        );
+
         private Rigidbody rb;
         private InputReader input;
 
@@ -34,6 +42,9 @@ namespace Ballast.Gameplay
 
         private void FixedUpdate()
         {
+            float weight = WeightSystem.Instance != null ? WeightSystem.Instance.CurrentWeight : 0f;
+            float mult = weightMovementMultiplier.Evaluate(weight);
+
             Vector3 v = rb.linearVelocity;
             v.y = -descentSpeed;
             rb.linearVelocity = v;
@@ -41,13 +52,14 @@ namespace Ballast.Gameplay
             float inputX = input.Move.x;
             if (Mathf.Abs(inputX) > 0.001f)
             {
-                rb.AddForce(Vector3.right * (inputX * lateralForce), ForceMode.Force);
+                rb.AddForce(Vector3.right * (inputX * lateralForce * mult), ForceMode.Force);
             }
 
+            float cap = maxLateralSpeed * mult;
             v = rb.linearVelocity;
-            if (Mathf.Abs(v.x) > maxLateralSpeed)
+            if (Mathf.Abs(v.x) > cap)
             {
-                v.x = Mathf.Sign(v.x) * maxLateralSpeed;
+                v.x = Mathf.Sign(v.x) * cap;
                 rb.linearVelocity = v;
             }
         }
