@@ -16,6 +16,10 @@ namespace Ballast.Gameplay
         [Header("Inertia")]
         [SerializeField, Range(0f, 10f)] private float linearDamping = 4f;
 
+        [Header("Wall response")]
+        [SerializeField] private LayerMask wallLayer;
+        [SerializeField] private float wallKnockback = 8f;
+
         [Header("Weight coupling")]
         [SerializeField]
         private AnimationCurve weightMovementMultiplier = new AnimationCurve(
@@ -62,6 +66,17 @@ namespace Ballast.Gameplay
                 v.x = Mathf.Sign(v.x) * cap;
                 rb.linearVelocity = v;
             }
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (((1 << collision.gameObject.layer) & wallLayer) == 0) return;
+
+            Vector3 n = collision.GetContact(0).normal;
+            n.y = 0f;
+            if (n.sqrMagnitude < 0.0001f) return;
+
+            rb.AddForce(n.normalized * wallKnockback, ForceMode.Impulse);
         }
     }
 }
