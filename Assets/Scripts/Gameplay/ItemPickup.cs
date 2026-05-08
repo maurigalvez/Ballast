@@ -8,11 +8,11 @@ namespace Ballast.Gameplay
         [SerializeField] private ItemData data;
         [SerializeField] private MeshFilter meshFilter;
         [SerializeField] private MeshRenderer meshRenderer;
-        [SerializeField] private SphereCollider trigger;
+        [SerializeField] private Collider trigger;
 
         public ItemData Data => data;
         public MeshRenderer Renderer => meshRenderer;
-        public SphereCollider Trigger => trigger;
+        public Collider Trigger => trigger;
 
         private static readonly int EmissionColorId = Shader.PropertyToID("_EmissionColor");
 
