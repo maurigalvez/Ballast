@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Ballast.Gameplay
 {
@@ -7,12 +8,14 @@ namespace Ballast.Gameplay
     {
         [SerializeField] private DiverInventory inventory;
         [SerializeField] private float radius = 1.2f;
-        [SerializeField] private float yOffset = 0.3f;
+        [FormerlySerializedAs("yOffset")]
+        [SerializeField] private float zOffset = 0f;
         [SerializeField] private float orbitSpeedDeg = 30f;
         [SerializeField] private float spinSpeedDeg = 90f;
         [SerializeField] private float reflowDuration = 0.3f;
         [SerializeField] private float appearScaleFrom = 0.8f;
         [SerializeField] private float appearScaleDuration = 0.15f;
+        [SerializeField] private float collectedScale = 0.5f;
 
         private class Slot
         {
@@ -104,13 +107,13 @@ namespace Ballast.Gameplay
                 }
 
                 float ang = (globalAngle + s.currentAngle) * Mathf.Deg2Rad;
-                Vector3 localPos = new(Mathf.Cos(ang) * radius, yOffset, Mathf.Sin(ang) * radius);
+                Vector3 localPos = new(Mathf.Cos(ang) * radius, Mathf.Sin(ang) * radius, zOffset);
                 s.pickup.transform.localPosition = localPos;
                 s.pickup.transform.Rotate(0f, spinSpeedDeg * dt, 0f, Space.Self);
 
                 s.appearT = Mathf.Min(s.appearT + dt, appearScaleDuration);
                 float a = appearScaleDuration > 0f ? s.appearT / appearScaleDuration : 1f;
-                float scale = Mathf.Lerp(appearScaleFrom, 1f, a);
+                float scale = Mathf.Lerp(appearScaleFrom * collectedScale, collectedScale, a);
                 s.pickup.transform.localScale = new Vector3(scale, scale, scale);
             }
         }
