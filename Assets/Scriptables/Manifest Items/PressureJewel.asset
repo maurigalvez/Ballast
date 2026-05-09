@@ -11,9 +11,10 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: abdbdc6c61c18fe4cb6b4470d57808dc, type: 3}
   m_Name: PressureJewel
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   itemName: Pressure Jewel
   weight: 2
   isManifestItem: 1
   mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   emissionColor: {r: 2.5, g: 1.4, b: 0.4, a: 1}
+  prefab: {fileID: 2608097629189131440, guid: 08eb53c6485b8114d88154c685abc39e, type: 3}

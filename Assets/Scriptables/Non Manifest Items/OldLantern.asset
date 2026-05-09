@@ -17,4 +17,4 @@ MonoBehaviour:
   isManifestItem: 0
   mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   emissionColor: {r: 0.3, g: 0.9, b: 2.5, a: 1}
-  prefab: {fileID: 0}
+  prefab: {fileID: 4840090493761850724, guid: 651b632081a1e9743aede487b4276a79, type: 3}

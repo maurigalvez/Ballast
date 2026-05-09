@@ -72,10 +72,18 @@ namespace Ballast.Gameplay
         private void FixedUpdate()
         {
             if (state != VentState.Firing || diverRb == null) return;
-            Vector3 dir = jetDirection;
+            if (!TryGetJetWorldDir(out Vector3 dir)) return;
+            diverRb.AddForce(dir * continuousAcceleration, ForceMode.Acceleration);
+        }
+
+        private bool TryGetJetWorldDir(out Vector3 dir)
+        {
+            dir = transform.TransformDirection(jetDirection);
             dir.y = 0f;
-            if (dir.sqrMagnitude < 0.0001f) return;
-            diverRb.AddForce(dir.normalized * continuousAcceleration, ForceMode.Acceleration);
+            dir.z = 0f;
+            if (dir.sqrMagnitude < 0.0001f) return false;
+            dir.Normalize();
+            return true;
         }
 
         private void Transition(VentState next)
@@ -101,13 +109,8 @@ namespace Ballast.Gameplay
                     StopJet(warningJet);
                     PlayJet(firingJet);
                     if (firingAudio != null && !firingAudio.isPlaying) firingAudio.Play();
-                    if (diverRb != null)
-                    {
-                        Vector3 dir = jetDirection;
-                        dir.y = 0f;
-                        if (dir.sqrMagnitude > 0.0001f)
-                            diverRb.AddForce(dir.normalized * impulseOnEnter, ForceMode.Impulse);
-                    }
+                    if (diverRb != null && TryGetJetWorldDir(out Vector3 fireDir))
+                        diverRb.AddForce(fireDir * impulseOnEnter, ForceMode.Impulse);
                     break;
             }
         }
@@ -119,14 +122,8 @@ namespace Ballast.Gameplay
             diverInJet = diver;
             diverRb = diver.GetComponent<Rigidbody>();
 
-            if (state == VentState.Firing && diverRb != null)
-            {
-                Vector3 dir = transform.TransformDirection(jetDirection);
-                dir.y = 0f;
-                dir.z = 0f;
-                if (dir.sqrMagnitude > 0.0001f)
-                    diverRb.AddForce(dir.normalized * impulseOnEnter, ForceMode.Impulse);
-            }
+            if (state == VentState.Firing && diverRb != null && TryGetJetWorldDir(out Vector3 dir))
+                diverRb.AddForce(dir * impulseOnEnter, ForceMode.Impulse);
         }
 
         private void OnTriggerExit(Collider other)
