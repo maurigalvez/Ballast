@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Ballast.Gameplay
@@ -38,6 +39,29 @@ namespace Ballast.Gameplay
         private Rigidbody rb;
         private InputReader input;
 
+        private readonly Dictionary<Object, float> slowSources = new();
+        private float slowMultiplier = 1f;
+
+        public void AddSlowSource(Object source, float multiplier)
+        {
+            if (source == null) return;
+            slowSources[source] = Mathf.Clamp(multiplier, 0.05f, 1f);
+            RecomputeSlow();
+        }
+
+        public void RemoveSlowSource(Object source)
+        {
+            if (source == null) return;
+            if (slowSources.Remove(source)) RecomputeSlow();
+        }
+
+        private void RecomputeSlow()
+        {
+            float min = 1f;
+            foreach (var kv in slowSources) if (kv.Value < min) min = kv.Value;
+            slowMultiplier = min;
+        }
+
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
@@ -64,10 +88,10 @@ namespace Ballast.Gameplay
             float inputX = input.Move.x;
             if (Mathf.Abs(inputX) > 0.001f)
             {
-                rb.AddForce(Vector3.right * (inputX * lateralForce * mult), ForceMode.Force);
+                rb.AddForce(Vector3.right * (inputX * lateralForce * mult * slowMultiplier), ForceMode.Force);
             }
 
-            float cap = maxLateralSpeed * mult;
+            float cap = maxLateralSpeed * mult * slowMultiplier;
             v = rb.linearVelocity;
             if (Mathf.Abs(v.x) > cap)
             {

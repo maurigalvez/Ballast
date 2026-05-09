@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32db9a57275bddd458cf79029339727c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ballast.Gameplay.DiverController
-  descentSpeed: 0.5
+  descentSpeed: 1
   lateralForce: 30
   maxLateralSpeed: 5
   linearDamping: 4
@@ -127,6 +127,39 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 10
       value: 0.3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  weightDescentMultiplier:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 6.0981565
+      value: 3.011829
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 9.990613
+      value: 3.0079741
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -176,6 +209,7 @@ MonoBehaviour:
   orbitItemMask:
     serializedVersion: 2
     m_Bits: 256
+  orbitItemLayerName: OrbitItem
   dropRayDistance: 50
   dropUpSpeed: 2.5
   dropFadeDuration: 2.5
@@ -324,7 +358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19db69bd49acd44bb1027cd1e2f61d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ballast.Gameplay.DiverFeedback
-  inventory: {fileID: 0}
+  inventory: {fileID: 4091483317560543216}
   visual: {fileID: 321489921469372315}
   pulsePeak: 1.08
   pulseDuration: 0.2

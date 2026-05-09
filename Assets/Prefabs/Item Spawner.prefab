@@ -60,13 +60,13 @@ MonoBehaviour:
   spawnAheadDistance: 25
   verticalSpacingMin: 6
   verticalSpacingMax: 12
-  lateralRange: 4
+  lateralRange: 3
   tunnelZ: 0
   totalManifestItems: 5
   manifestBias: 0.4
   wallLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 576
   wallCheckRadius: 0.8
   maxRejectRetries: 4
   despawnAboveDiver: 30

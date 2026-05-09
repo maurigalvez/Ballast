@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8276889472442531498
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6962833611672748011}
+  - component: {fileID: 7816955772370987728}
+  m_Layer: 0
+  m_Name: Obstacle Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6962833611672748011
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8276889472442531498}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.48088, y: 2.37988, z: -0.04339}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7816955772370987728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8276889472442531498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67ba0a791b1f0974dbc337f3a9921923, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ballast.Gameplay.ObstacleSpawner
+  diver: {fileID: 0}
+  obstaclePrefabs:
+  - {fileID: 8889459817229830923, guid: ae203d15c34e0674ba00d8a9b01847b7, type: 3}
+  - {fileID: 4927274148588421744, guid: fe8b7e62d71081c43ab269183e6c9ccd, type: 3}
+  spawnAheadDistance: 25
+  verticalSpacingMin: 8
+  verticalSpacingMax: 16
+  lateralRange: 3.5
+  tunnelZ: 0
+  blockingLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  clearanceRadius: 1.2
+  maxRejectRetries: 4
+  despawnAboveDiver: 30
