@@ -11,9 +11,10 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: abdbdc6c61c18fe4cb6b4470d57808dc, type: 3}
   m_Name: RustedChain
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   itemName: Rusted Chain
   weight: 3
   isManifestItem: 0
   mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
   emissionColor: {r: 0.3, g: 0.9, b: 2.5, a: 1}
+  prefab: {fileID: 383810872072187199, guid: b862ae23d887f8044b848c6401b9a653, type: 3}

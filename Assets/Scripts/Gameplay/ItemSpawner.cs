@@ -70,7 +70,7 @@ namespace Ballast.Gameplay
             bool manifest = ShouldSpawnManifest();
             ItemData[] pool = manifest ? manifestPool : nonManifestPool;
             ItemPickup prefab = manifest ? manifestPrefab : nonManifestPrefab;
-            if (pool == null || pool.Length == 0 || prefab == null) return;
+            if (pool == null || pool.Length == 0) return;
 
             Vector3 pos = default;
             bool placed = false;
@@ -87,7 +87,9 @@ namespace Ballast.Gameplay
             if (!placed) return;
 
             var data = pool[Random.Range(0, pool.Length)];
-            var instance = Instantiate(prefab, pos, Quaternion.identity);
+            var chosenPrefab = data.Prefab != null ? data.Prefab : prefab;
+            if (chosenPrefab == null) return;
+            var instance = Instantiate(chosenPrefab, pos, Quaternion.identity);
             instance.Bind(data);
             live.Add(instance);
             if (manifest) manifestSpawned++;
@@ -96,10 +98,20 @@ namespace Ballast.Gameplay
         private bool ShouldSpawnManifest()
         {
             bool manifestQuotaLeft = manifestSpawned < totalManifestItems;
-            bool hasNonManifest = nonManifestPool != null && nonManifestPool.Length > 0 && nonManifestPrefab != null;
+            bool hasNonManifest = nonManifestPool != null && nonManifestPool.Length > 0 && PoolHasUsablePrefab(nonManifestPool, nonManifestPrefab);
             if (!manifestQuotaLeft) return false;
             if (!hasNonManifest) return true;
             return Random.value < manifestBias;
+        }
+
+        private static bool PoolHasUsablePrefab(ItemData[] pool, ItemPickup fallback)
+        {
+            if (fallback != null) return true;
+            for (int i = 0; i < pool.Length; i++)
+            {
+                if (pool[i] != null && pool[i].Prefab != null) return true;
+            }
+            return false;
         }
     }
 }

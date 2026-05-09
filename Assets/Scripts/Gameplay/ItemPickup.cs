@@ -30,6 +30,7 @@ namespace Ballast.Gameplay
         private void ApplyData()
         {
             if (data == null) return;
+            if (data.Prefab != null) return;
             if (meshFilter != null && data.Mesh != null) meshFilter.sharedMesh = data.Mesh;
             if (meshRenderer != null)
             {

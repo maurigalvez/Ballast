@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace Ballast.Gameplay
 {
@@ -76,7 +76,6 @@ namespace Ballast.Gameplay
                 diverRigidbody.linearVelocity = Vector3.zero;
                 diverRigidbody.isKinematic = true;
             }
-
             OnRunEnd?.Invoke(reason);
             StartCoroutine(FadeAndShow(reason));
         }

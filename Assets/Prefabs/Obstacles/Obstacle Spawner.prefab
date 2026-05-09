@@ -48,6 +48,7 @@ MonoBehaviour:
   obstaclePrefabs:
   - {fileID: 8889459817229830923, guid: ae203d15c34e0674ba00d8a9b01847b7, type: 3}
   - {fileID: 4927274148588421744, guid: fe8b7e62d71081c43ab269183e6c9ccd, type: 3}
+  - {fileID: 6117688374635787424, guid: 9ad0c862de1583d419356f71a367e2d9, type: 3}
   spawnAheadDistance: 25
   verticalSpacingMin: 8
   verticalSpacingMax: 16

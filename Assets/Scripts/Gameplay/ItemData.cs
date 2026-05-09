@@ -10,11 +10,13 @@ namespace Ballast.Gameplay
         [SerializeField] private bool isManifestItem;
         [SerializeField] private Mesh mesh;
         [SerializeField, ColorUsage(true, true)] private Color emissionColor = Color.white;
+        [SerializeField] private ItemPickup prefab;
 
         public string ItemName => itemName;
         public int Weight => weight;
         public bool IsManifestItem => isManifestItem;
         public Mesh Mesh => mesh;
         public Color EmissionColor => emissionColor;
+        public ItemPickup Prefab => prefab;
     }
 }
