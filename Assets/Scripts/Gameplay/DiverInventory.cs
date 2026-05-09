@@ -10,12 +10,14 @@ namespace Ballast.Gameplay
         [SerializeField] private int maxSlots = 6;
         [SerializeField] private Transform orbitRoot;
         [SerializeField] private LayerMask orbitItemMask;
+        [SerializeField] private string orbitItemLayerName = "OrbitItem";
         [SerializeField] private float dropRayDistance = 50f;
         [SerializeField] private float dropUpSpeed = 2.5f;
         [SerializeField] private float dropFadeDuration = 2.5f;
         [SerializeField] private Camera dropCamera;
 
         private readonly List<ItemPickup> items = new();
+        private int orbitItemLayer = -1;
 
         public IReadOnlyList<ItemPickup> Items => items;
         public int MaxSlots => maxSlots;
@@ -27,6 +29,7 @@ namespace Ballast.Gameplay
         private void Awake()
         {
             if (dropCamera == null) dropCamera = Camera.main;
+            orbitItemLayer = LayerMask.NameToLayer(orbitItemLayerName);
         }
 
         private void Update()
@@ -68,11 +71,19 @@ namespace Ballast.Gameplay
             if (ws != null && ws.CurrentWeight + pickup.Data.Weight > ws.MaxWeight) return false;
 
             items.Add(pickup);
-            pickup.DisableTrigger();
+            if (orbitItemLayer >= 0) SetLayerRecursive(pickup.gameObject, orbitItemLayer);
             if (orbitRoot != null) pickup.transform.SetParent(orbitRoot, worldPositionStays: false);
             ws?.AddWeight(pickup.Data.Weight);
             OnCollected?.Invoke(pickup);
             return true;
+        }
+
+        private static void SetLayerRecursive(GameObject go, int layer)
+        {
+            go.layer = layer;
+            var t = go.transform;
+            for (int i = 0; i < t.childCount; i++)
+                SetLayerRecursive(t.GetChild(i).gameObject, layer);
         }
 
         public bool TryDrop(ItemPickup pickup)
