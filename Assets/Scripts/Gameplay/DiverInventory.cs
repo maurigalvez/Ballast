@@ -12,8 +12,6 @@ namespace Ballast.Gameplay
         [SerializeField] private LayerMask orbitItemMask;
         [SerializeField] private string orbitItemLayerName = "OrbitItem";
         [SerializeField] private float dropRayDistance = 50f;
-        [SerializeField] private float dropUpSpeed = 2.5f;
-        [SerializeField] private float dropFadeDuration = 2.5f;
         [SerializeField] private Camera dropCamera;
 
         private readonly List<ItemPickup> items = new();
@@ -107,7 +105,7 @@ namespace Ballast.Gameplay
             pickup.transform.SetParent(null, worldPositionStays: true);
             WeightSystem.Instance?.RemoveWeight(pickup.Data.Weight);
             OnDropped?.Invoke(pickup);
-            pickup.StartCoroutine(pickup.DropAndFade(dropUpSpeed, dropFadeDuration));
+            Destroy(pickup.gameObject);
             return true;
         }
 
