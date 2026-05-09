@@ -23,6 +23,17 @@ namespace Ballast.Gameplay
         public int MaxSlots => maxSlots;
         public Transform OrbitRoot => orbitRoot;
 
+        public int ManifestItemCount
+        {
+            get
+            {
+                int c = 0;
+                for (int i = 0; i < items.Count; i++)
+                    if (items[i] != null && items[i].Data != null && items[i].Data.IsManifestItem) c++;
+                return c;
+            }
+        }
+
         public event Action<ItemPickup> OnCollected;
         public event Action<ItemPickup> OnDropped;
 

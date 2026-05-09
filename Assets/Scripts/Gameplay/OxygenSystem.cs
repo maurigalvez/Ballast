@@ -1,0 +1,70 @@
+using System;
+using UnityEngine;
+
+namespace Ballast.Gameplay
+{
+    public class OxygenSystem : MonoBehaviour
+    {
+        public static OxygenSystem Instance { get; private set; }
+
+        [SerializeField] private float maxO2 = 100f;
+        [SerializeField] private float depletionPerSec = 1.5f;
+        [SerializeField] private float currentO2;
+
+        public float CurrentO2 => currentO2;
+        public float MaxO2 => maxO2;
+        public float Percent => maxO2 > 0f ? currentO2 / maxO2 : 0f;
+        public bool IsDepleting { get; set; } = true;
+
+        public event Action<float> OnO2Changed;
+        public event Action OnO2Empty;
+
+        private bool emptyFired;
+
+        private void Awake()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(this);
+                return;
+            }
+            Instance = this;
+            currentO2 = maxO2;
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance == this) Instance = null;
+        }
+
+        private void Start()
+        {
+            OnO2Changed?.Invoke(Percent);
+        }
+
+        private void Update()
+        {
+            if (!IsDepleting || emptyFired) return;
+            if (depletionPerSec > 0f) Drain(depletionPerSec * Time.deltaTime);
+        }
+
+        public void TakeDamage(float amount)
+        {
+            if (amount <= 0f || emptyFired) return;
+            Drain(amount);
+        }
+
+        private void Drain(float amount)
+        {
+            float next = Mathf.Max(0f, currentO2 - amount);
+            if (Mathf.Approximately(next, currentO2)) return;
+            currentO2 = next;
+            OnO2Changed?.Invoke(Percent);
+            if (currentO2 <= 0f && !emptyFired)
+            {
+                emptyFired = true;
+                OnO2Empty?.Invoke();
+            }
+        }
+    }
+}

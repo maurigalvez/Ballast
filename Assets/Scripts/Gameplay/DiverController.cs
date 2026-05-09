@@ -20,6 +20,9 @@ namespace Ballast.Gameplay
         [Header("Wall response")]
         [SerializeField] private LayerMask wallLayer;
         [SerializeField] private float wallKnockback = 8f;
+        [SerializeField] private float wallO2Penalty = 12f;
+        [SerializeField] private float wallPenaltyCooldown = 0.5f;
+        private float lastWallPenaltyTime = -10f;
 
         [Header("Weight coupling")]
         [SerializeField]
@@ -109,6 +112,12 @@ namespace Ballast.Gameplay
             if (n.sqrMagnitude < 0.0001f) return;
 
             rb.AddForce(n.normalized * wallKnockback, ForceMode.Impulse);
+
+            if (Time.time - lastWallPenaltyTime >= wallPenaltyCooldown)
+            {
+                OxygenSystem.Instance?.TakeDamage(wallO2Penalty);
+                lastWallPenaltyTime = Time.time;
+            }
         }
     }
 }
