@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7540508909084301339
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3525927122570078418}
+  - component: {fileID: 3347462974465537411}
+  m_Layer: 0
+  m_Name: Item Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3525927122570078418
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7540508909084301339}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3347462974465537411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7540508909084301339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9ebf2d46ceb6e649ae37c31cc7f04a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ballast.Gameplay.ItemSpawner
+  diver: {fileID: 0}
+  manifestPrefab: {fileID: 7758431991683449006, guid: 14cb96f1cc84ba648ad905b0d9ce1482, type: 3}
+  nonManifestPrefab: {fileID: 7758431991683449006, guid: 14cb96f1cc84ba648ad905b0d9ce1482, type: 3}
+  manifestPool:
+  - {fileID: 11400000, guid: d72dd5a0b3f11d24fa627ba7cbff8450, type: 2}
+  - {fileID: 11400000, guid: fb1735cb3101e5e49853663d9eb44df9, type: 2}
+  - {fileID: 11400000, guid: 74d7ee60a367e274389db816801d2cf0, type: 2}
+  - {fileID: 11400000, guid: 20db5325b3cc2cc4fb7d276668b71ff3, type: 2}
+  - {fileID: 11400000, guid: 2f8b139016feb294eba78357a20f67ea, type: 2}
+  nonManifestPool:
+  - {fileID: 11400000, guid: 42b36d51c9050854c8bccdb70ac429ec, type: 2}
+  - {fileID: 11400000, guid: 8c095e20f87aca747ae5f762f5fe19f8, type: 2}
+  - {fileID: 11400000, guid: f91d00e32eb8bc64fb52a6769a76d467, type: 2}
+  spawnAheadDistance: 25
+  verticalSpacingMin: 6
+  verticalSpacingMax: 12
+  lateralRange: 4
+  tunnelZ: 0
+  totalManifestItems: 5
+  manifestBias: 0.4
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  wallCheckRadius: 0.8
+  maxRejectRetries: 4
+  despawnAboveDiver: 30
