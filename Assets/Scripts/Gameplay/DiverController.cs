@@ -28,6 +28,13 @@ namespace Ballast.Gameplay
             new Keyframe(10f, 0.3f)
         );
 
+        [SerializeField]
+        private AnimationCurve weightDescentMultiplier = new AnimationCurve(
+            new Keyframe(0f, 1f),
+            new Keyframe(5f, 1.5f),
+            new Keyframe(10f, 2.5f)
+        );
+
         private Rigidbody rb;
         private InputReader input;
 
@@ -48,9 +55,10 @@ namespace Ballast.Gameplay
         {
             float weight = WeightSystem.Instance != null ? WeightSystem.Instance.CurrentWeight : 0f;
             float mult = weightMovementMultiplier.Evaluate(weight);
+            float descentMult = weightDescentMultiplier.Evaluate(weight);
 
             Vector3 v = rb.linearVelocity;
-            v.y = -descentSpeed;
+            v.y = -descentSpeed * descentMult;
             rb.linearVelocity = v;
 
             float inputX = input.Move.x;
