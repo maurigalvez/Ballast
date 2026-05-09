@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Ballast.Gameplay
 {
+    [DefaultExecutionOrder(-100)]
     public class OxygenSystem : MonoBehaviour
     {
         public static OxygenSystem Instance { get; private set; }
@@ -18,7 +19,7 @@ namespace Ballast.Gameplay
         public float Percent => maxO2 > 0f ? currentO2 / maxO2 : 0f;
         public float WarningThreshold => warningThreshold;
         public float CriticalThreshold => criticalThreshold;
-        public bool IsDepleting { get; set; } = true;
+        public bool IsDepleting { get; set; } = false;
 
         public event Action<float> OnO2Changed;
         public event Action OnO2Warning;

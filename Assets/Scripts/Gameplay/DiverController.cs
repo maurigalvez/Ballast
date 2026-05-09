@@ -80,6 +80,8 @@ namespace Ballast.Gameplay
 
         private void FixedUpdate()
         {
+            if (GameManager.Instance != null && GameManager.Instance.State != RunState.Running) return;
+
             float weight = WeightSystem.Instance != null ? WeightSystem.Instance.CurrentWeight : 0f;
             float mult = weightMovementMultiplier.Evaluate(weight);
             float descentMult = weightDescentMultiplier.Evaluate(weight);

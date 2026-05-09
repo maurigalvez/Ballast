@@ -106,6 +106,7 @@ namespace Ballast.Gameplay
         {
             if (currentState == BreathState.Empty) return;
             if (breathingSource == null) return;
+            if (GameManager.Instance != null && GameManager.Instance.State != RunState.Running) return;
             if (breathingSource.isPlaying) return;
             if (Time.time < nextPlayTime) return;
 
@@ -145,6 +146,7 @@ namespace Ballast.Gameplay
 
             // Stop any in-flight clip from the previous state and play a fresh one immediately.
             breathingSource.Stop();
+            if (GameManager.Instance != null && GameManager.Instance.State != RunState.Running) return;
             PlayCurrentState();
         }
 

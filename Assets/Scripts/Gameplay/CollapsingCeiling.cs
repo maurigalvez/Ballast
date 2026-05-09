@@ -18,6 +18,7 @@ namespace Ballast.Gameplay
         private void Update()
         {
             if (stopped) return;
+            if (GameManager.Instance != null && GameManager.Instance.State != RunState.Running) return;
             transform.position += Vector3.down * (descentSpeed * Time.deltaTime);
         }
 

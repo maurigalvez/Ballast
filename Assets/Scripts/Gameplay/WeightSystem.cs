@@ -5,6 +5,7 @@ namespace Ballast.Gameplay
 {
     public enum WeightZone { Light, Loaded, Critical }
 
+    [DefaultExecutionOrder(-100)]
     public class WeightSystem : MonoBehaviour
     {
         public static WeightSystem Instance { get; private set; }

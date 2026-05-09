@@ -47,12 +47,7 @@ MonoBehaviour:
   diver: {fileID: 0}
   manifestPrefab: {fileID: 7758431991683449006, guid: 14cb96f1cc84ba648ad905b0d9ce1482, type: 3}
   nonManifestPrefab: {fileID: 7758431991683449006, guid: 14cb96f1cc84ba648ad905b0d9ce1482, type: 3}
-  manifestPool:
-  - {fileID: 11400000, guid: d72dd5a0b3f11d24fa627ba7cbff8450, type: 2}
-  - {fileID: 11400000, guid: fb1735cb3101e5e49853663d9eb44df9, type: 2}
-  - {fileID: 11400000, guid: 74d7ee60a367e274389db816801d2cf0, type: 2}
-  - {fileID: 11400000, guid: 20db5325b3cc2cc4fb7d276668b71ff3, type: 2}
-  - {fileID: 11400000, guid: 2f8b139016feb294eba78357a20f67ea, type: 2}
+  manifestRegistry: {fileID: 11400000, guid: feaa3aca02213084e9e2c9e0a589deb3, type: 2}
   nonManifestPool:
   - {fileID: 11400000, guid: 42b36d51c9050854c8bccdb70ac429ec, type: 2}
   - {fileID: 11400000, guid: 8c095e20f87aca747ae5f762f5fe19f8, type: 2}

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Ballast.Gameplay
@@ -10,23 +11,34 @@ namespace Ballast.Gameplay
 
         private bool resolved;
 
+        protected override void Start()
+        {
+            base.Start();
+            if (label != null) label.text = $"MANIFEST {requiredManifest}";
+        }
+
         protected override void HandleDiverEntered(Collider diver)
         {
             if (resolved) return;
             resolved = true;
 
+            var delivered = new List<ItemData>();
             if (diverInventory != null)
             {
-                var snapshot = new System.Collections.Generic.List<ItemPickup>(diverInventory.Items);
+                var snapshot = new List<ItemPickup>(diverInventory.Items);
                 for (int i = 0; i < snapshot.Count; i++)
                 {
                     var pickup = snapshot[i];
                     if (pickup == null || pickup.Data == null) continue;
-                    if (!pickup.Data.IsManifestItem) diverInventory.TryDrop(pickup);
+                    if (pickup.Data.IsManifestItem) delivered.Add(pickup.Data);
+                    else diverInventory.TryDrop(pickup);
                 }
             }
 
-            int n = diverInventory != null ? diverInventory.ManifestItemCount : 0;
+            if (GameManager.Instance != null)
+                GameManager.Instance.SetDeliveredManifest(delivered);
+
+            int n = delivered.Count;
 
             if (n >= requiredManifest)
             {

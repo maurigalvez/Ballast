@@ -8,7 +8,7 @@ namespace Ballast.Gameplay
         [SerializeField] private Transform diver;
         [SerializeField] private ItemPickup manifestPrefab;
         [SerializeField] private ItemPickup nonManifestPrefab;
-        [SerializeField] private ItemData[] manifestPool;
+        [SerializeField] private ManifestRegistry manifestRegistry;
         [SerializeField] private ItemData[] nonManifestPool;
 
         [Header("Spawn cadence")]
@@ -43,6 +43,7 @@ namespace Ballast.Gameplay
         private void Update()
         {
             if (diver == null) return;
+            if (GameManager.Instance != null && GameManager.Instance.State != RunState.Running) return;
 
             float frontier = diver.position.y - spawnAheadDistance;
             int safety = 16;
@@ -68,9 +69,11 @@ namespace Ballast.Gameplay
         private void SpawnOne(float y)
         {
             bool manifest = ShouldSpawnManifest();
-            ItemData[] pool = manifest ? manifestPool : nonManifestPool;
+            IReadOnlyList<ItemData> pool = manifest
+                ? (manifestRegistry != null ? manifestRegistry.Items : null)
+                : nonManifestPool;
             ItemPickup prefab = manifest ? manifestPrefab : nonManifestPrefab;
-            if (pool == null || pool.Length == 0) return;
+            if (pool == null || pool.Count == 0) return;
 
             Vector3 pos = default;
             bool placed = false;
@@ -86,7 +89,7 @@ namespace Ballast.Gameplay
             }
             if (!placed) return;
 
-            var data = pool[Random.Range(0, pool.Length)];
+            var data = pool[Random.Range(0, pool.Count)];
             var chosenPrefab = data.Prefab != null ? data.Prefab : prefab;
             if (chosenPrefab == null) return;
             var instance = Instantiate(chosenPrefab, pos, Quaternion.identity);

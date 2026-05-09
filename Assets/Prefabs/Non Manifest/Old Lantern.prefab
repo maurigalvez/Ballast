@@ -174,10 +174,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7174294738849d24396702d547627690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ballast.Gameplay.ItemPickup
-  data: {fileID: 0}
+  data: {fileID: 11400000, guid: 8c095e20f87aca747ae5f762f5fe19f8, type: 2}
   meshFilter: {fileID: 3973359968596072716}
   meshRenderer: {fileID: 3973359968597127732}
   trigger: {fileID: 3708176629942960064}
+  pickupClip: {fileID: 8300000, guid: ff43223081cdc6f4ea4b4f4238aa0ad1, type: 3}
+  keyPickupClip: {fileID: 0}
+  pickupVolume: 1
 --- !u!136 &3708176629942960064
 CapsuleCollider:
   m_ObjectHideFlags: 0

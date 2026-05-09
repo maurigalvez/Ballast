@@ -52,6 +52,9 @@ MonoBehaviour:
   meshFilter: {fileID: 4197506253110277583}
   meshRenderer: {fileID: 4197506253108911991}
   trigger: {fileID: 4534486294196548773}
+  pickupClip: {fileID: 0}
+  keyPickupClip: {fileID: 8300000, guid: f8b160cacc3736c489b2bc8589620fd7, type: 3}
+  pickupVolume: 1
 --- !u!65 &4534486294196548773
 BoxCollider:
   m_ObjectHideFlags: 0
