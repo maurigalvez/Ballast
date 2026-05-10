@@ -51,8 +51,12 @@ namespace Ballast.Gameplay
             }
             else
             {
-                GameManager.Instance?.FlagAirlockManifestFail();
-                resolved = false;
+                if (GameManager.Instance != null)
+                {
+                    GameManager.Instance.SetLastManifestCount(n);
+                    GameManager.Instance.FlagAirlockManifestFail();
+                    GameManager.Instance.RunEnd(RunEndReason.ManifestFailed);
+                }
             }
         }
     }

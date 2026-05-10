@@ -77,7 +77,6 @@ namespace Ballast.Gameplay
             if (items.Count >= maxSlots) return false;
 
             var ws = WeightSystem.Instance;
-            if (ws != null && ws.CurrentWeight + pickup.Data.Weight > ws.MaxWeight) return false;
 
             items.Add(pickup);
             pickup.PlayPickupSfx();

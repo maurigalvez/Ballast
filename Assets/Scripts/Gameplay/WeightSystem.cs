@@ -52,7 +52,7 @@ namespace Ballast.Gameplay
 
         private void SetWeight(float value)
         {
-            float clamped = Mathf.Clamp(value, 0f, maxWeight);
+            float clamped = Mathf.Max(value, 0f);
             if (Mathf.Approximately(clamped, currentWeight)) return;
             currentWeight = clamped;
             OnWeightChanged?.Invoke(currentWeight);

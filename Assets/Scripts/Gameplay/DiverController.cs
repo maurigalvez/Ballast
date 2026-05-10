@@ -9,6 +9,7 @@ namespace Ballast.Gameplay
     {
         [Header("Descent")]
         [SerializeField, Min(0f)] private float descentSpeed = 2f;
+        [SerializeField, Min(0f)] private float overloadAscentSpeed = 2f;
 
         [Header("Lateral steering")]
         [SerializeField] private float lateralForce = 30f;
@@ -82,12 +83,16 @@ namespace Ballast.Gameplay
         {
             if (GameManager.Instance != null && GameManager.Instance.State != RunState.Running) return;
 
-            float weight = WeightSystem.Instance != null ? WeightSystem.Instance.CurrentWeight : 0f;
+            var ws = WeightSystem.Instance;
+            float weight = ws != null ? ws.CurrentWeight : 0f;
+            float maxW = ws != null ? ws.MaxWeight : float.PositiveInfinity;
             float mult = weightMovementMultiplier.Evaluate(weight);
             float descentMult = weightDescentMultiplier.Evaluate(weight);
 
             Vector3 v = rb.linearVelocity;
-            v.y = -descentSpeed * descentMult * slowMultiplier;
+            v.y = weight > maxW
+                ? overloadAscentSpeed * slowMultiplier
+                : -descentSpeed * descentMult * slowMultiplier;
             rb.linearVelocity = v;
 
             float inputX = input.Move.x;

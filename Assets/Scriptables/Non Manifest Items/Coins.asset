@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Coins
   m_EditorClassIdentifier: 
   itemName: Coins
-  weight: 1
+  weight: 2
   isManifestItem: 0
   mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   emissionColor: {r: 0.3, g: 0.9, b: 2.5, a: 1}
   prefab: {fileID: 8181784587949485899, guid: 6d60c3a3a5301754cb362cf863a1ceb1, type: 3}
+  icon: {fileID: 0}
