@@ -104,8 +104,7 @@ namespace Ballast.Gameplay
 
         private void OnMainMenu()
         {
-            Debug.Log("[EndScreen] Main menu not implemented; reloading scene.");
-            OnTryAgain();
+            SceneManager.LoadScene("MainMenu");
         }
     }
 }
