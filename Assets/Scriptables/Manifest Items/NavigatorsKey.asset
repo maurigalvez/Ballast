@@ -18,3 +18,4 @@ MonoBehaviour:
   mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   emissionColor: {r: 2.5, g: 1.4, b: 0.4, a: 1}
   prefab: {fileID: 3557119503089570255, guid: e7fa611528577714d8d3929de718ecd7, type: 3}
+  icon: {fileID: 21300000, guid: 74bdf4b8075875241aca7cafc4e83a3d, type: 3}

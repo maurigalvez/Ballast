@@ -22,6 +22,10 @@ namespace Ballast.Gameplay
         [SerializeField] protected float blockKnockback = 18f;
         [SerializeField] protected float redFlashDuration = 0.25f;
 
+        [Header("Audio")]
+        [SerializeField] protected AudioSource audioSource;
+        [SerializeField] protected AudioClip openCue;
+
         public int MaxWeight => maxWeight;
         public bool IsOpen { get; protected set; }
         public event Action<WeightGate> OnApproach;

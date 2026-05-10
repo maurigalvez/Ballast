@@ -14,6 +14,9 @@ namespace Ballast.Gameplay
         [SerializeField] private TMP_Text percentLabel;
         [SerializeField] private string percentFormat = "{0:0}%";
 
+        [Header("Timer")]
+        [SerializeField] private TMP_Text timerLabel;
+
         [Header("Weight")]
         [SerializeField] private TMP_Text weightLabel;
         [SerializeField] private string weightFormat = "{0:0} / {1:0} KG";
@@ -96,6 +99,15 @@ namespace Ballast.Gameplay
             if (smoothing <= 0f) displayPercent = targetPercent;
             else displayPercent = Mathf.Lerp(displayPercent, targetPercent, 1f - Mathf.Exp(-smoothing * Time.deltaTime));
             Apply(displayPercent);
+            ApplyTimer();
+        }
+
+        private void ApplyTimer()
+        {
+            if (timerLabel == null) return;
+            float seconds = GameManager.Instance != null ? GameManager.Instance.RunTimeSeconds : 0f;
+            int total = Mathf.Max(0, Mathf.FloorToInt(seconds));
+            timerLabel.text = $"{total / 60:00}:{total % 60:00}";
         }
 
         private void HandleO2Changed(float percent) => targetPercent = percent;

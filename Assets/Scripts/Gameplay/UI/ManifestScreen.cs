@@ -36,7 +36,7 @@ namespace Ballast.Gameplay
             {
                 if (items[i] == null) continue;
                 var row = Instantiate(rowPrefab, rowParent);
-                row.Bind(items[i].ItemName, false);
+                row.Bind(items[i], false);
             }
         }
 

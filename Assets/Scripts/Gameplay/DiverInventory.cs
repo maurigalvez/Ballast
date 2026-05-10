@@ -80,6 +80,7 @@ namespace Ballast.Gameplay
             if (ws != null && ws.CurrentWeight + pickup.Data.Weight > ws.MaxWeight) return false;
 
             items.Add(pickup);
+            pickup.PlayPickupSfx();
             if (orbitItemLayer >= 0) SetLayerRecursive(pickup.gameObject, orbitItemLayer);
             if (orbitRoot != null) pickup.transform.SetParent(orbitRoot, worldPositionStays: false);
             ws?.AddWeight(pickup.Data.Weight);

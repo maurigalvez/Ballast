@@ -66,7 +66,7 @@ namespace Ballast.Gameplay
                 if (data == null) continue;
                 bool ticked = delivered != null && Contains(delivered, data);
                 var row = Instantiate(rowPrefab, rowParent);
-                row.Bind(data.ItemName, ticked);
+                row.Bind(data, ticked);
             }
         }
 

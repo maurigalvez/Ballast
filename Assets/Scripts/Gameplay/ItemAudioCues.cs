@@ -21,19 +21,12 @@ namespace Ballast.Gameplay
 
         private void OnEnable()
         {
-            inventory.OnCollected += HandleCollected;
             inventory.OnDropped += HandleDropped;
         }
 
         private void OnDisable()
         {
-            inventory.OnCollected -= HandleCollected;
             inventory.OnDropped -= HandleDropped;
-        }
-
-        private void HandleCollected(ItemPickup item)
-        {
-            if (item != null) item.PlayPickupSfx();
         }
 
         private void HandleDropped(ItemPickup item)
