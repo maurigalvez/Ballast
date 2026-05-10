@@ -24,6 +24,16 @@ namespace Ballast.Gameplay
         [SerializeField] private Color weightColorMid = Color.yellow;
         [SerializeField] private Color weightColorMax = Color.red;
 
+        [Header("Weight Pulse")]
+        [SerializeField, Min(1f)] private float pulseScale = 1.3f;
+        [SerializeField, Min(0.01f)] private float pulseDuration = 0.35f;
+        [SerializeField] private AnimationCurve pulseCurve = new AnimationCurve(
+            new Keyframe(0f, 0f),
+            new Keyframe(0.3f, 1f),
+            new Keyframe(1f, 0f));
+        [SerializeField] private Color pulseFlashColor = Color.white;
+        [SerializeField, Range(0f, 1f)] private float pulseFlashAmount = 0.6f;
+
         [Header("Visibility")]
         [SerializeField] private GameObject root;
         [SerializeField] private bool hidePreRun = true;
@@ -35,8 +45,14 @@ namespace Ballast.Gameplay
         private bool subscribedGame;
         private bool subscribedWeight;
 
+        private Vector3 weightLabelBaseScale = Vector3.one;
+        private Color weightLabelBaseColor = Color.white;
+        private float pulseTime = -1f;
+        private bool weightInitialized;
+
         private void Awake()
         {
+            if (weightLabel != null) weightLabelBaseScale = weightLabel.transform.localScale;
             TrySubscribe();
             ApplyVisibility();
             Apply(displayPercent);
@@ -66,11 +82,17 @@ namespace Ballast.Gameplay
             {
                 WeightSystem.Instance.OnWeightChanged += HandleWeightChanged;
                 ApplyWeight(WeightSystem.Instance.CurrentWeight);
+                weightInitialized = true;
                 subscribedWeight = true;
             }
         }
 
-        private void HandleWeightChanged(float current) => ApplyWeight(current);
+        private void HandleWeightChanged(float current)
+        {
+            ApplyWeight(current);
+            if (weightInitialized) pulseTime = 0f;
+            weightInitialized = true;
+        }
 
         private void ApplyWeight(float current)
         {
@@ -78,9 +100,28 @@ namespace Ballast.Gameplay
             float max = WeightSystem.Instance != null ? WeightSystem.Instance.MaxWeight : 0f;
             weightLabel.text = string.Format(weightFormat, current, max);
             float t = max > 0f ? Mathf.Clamp01(current / max) : 0f;
-            weightLabel.color = t < 0.5f
+            weightLabelBaseColor = t < 0.5f
                 ? Color.Lerp(weightColorLight, weightColorMid, t / 0.5f)
                 : Color.Lerp(weightColorMid, weightColorMax, (t - 0.5f) / 0.5f);
+            if (pulseTime < 0f) weightLabel.color = weightLabelBaseColor;
+        }
+
+        private void UpdatePulse()
+        {
+            if (pulseTime < 0f || weightLabel == null) return;
+            pulseTime += Time.unscaledDeltaTime;
+            float t = pulseTime / pulseDuration;
+            if (t >= 1f)
+            {
+                weightLabel.transform.localScale = weightLabelBaseScale;
+                weightLabel.color = weightLabelBaseColor;
+                pulseTime = -1f;
+                return;
+            }
+            float curve = pulseCurve.Evaluate(t);
+            float scale = 1f + (pulseScale - 1f) * curve;
+            weightLabel.transform.localScale = weightLabelBaseScale * scale;
+            weightLabel.color = Color.Lerp(weightLabelBaseColor, pulseFlashColor, curve * pulseFlashAmount);
         }
 
         private void OnDestroy()
@@ -100,6 +141,7 @@ namespace Ballast.Gameplay
             else displayPercent = Mathf.Lerp(displayPercent, targetPercent, 1f - Mathf.Exp(-smoothing * Time.deltaTime));
             Apply(displayPercent);
             ApplyTimer();
+            UpdatePulse();
         }
 
         private void ApplyTimer()

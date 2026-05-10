@@ -23,6 +23,7 @@ namespace Ballast.Gameplay
         public event Action OnRunStart;
         public event Action<RunEndReason> OnRunEnd;
         public event Action<WeightGate> OnGateApproach;
+        public event Action<WeightGate> OnWeightGateBlocked;
 
         private bool airlockManifestFailFlag;
 
@@ -75,6 +76,11 @@ namespace Ballast.Gameplay
         public void NotifyGateApproach(WeightGate gate)
         {
             OnGateApproach?.Invoke(gate);
+        }
+
+        public void NotifyWeightGateBlocked(WeightGate gate)
+        {
+            OnWeightGateBlocked?.Invoke(gate);
         }
 
         public void SetLastManifestCount(int count)

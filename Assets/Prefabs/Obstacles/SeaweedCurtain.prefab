@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1610784636258330973}
   - component: {fileID: 9195872248987982294}
   - component: {fileID: 8328287971677816230}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Quad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 4960429047931863968}
   - component: {fileID: 6680671287004267671}
   - component: {fileID: 9004678961896632557}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SeaweedCurtain
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -73,7 +73,7 @@ namespace Ballast.Gameplay
             rb.useGravity = false;
             rb.linearDamping = linearDamping;
             rb.angularDamping = 5f;
-            rb.constraints = RigidbodyConstraints.FreezeRotation;
+            rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
             rb.interpolation = RigidbodyInterpolation.Interpolate;
             rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         }
@@ -87,7 +87,7 @@ namespace Ballast.Gameplay
             float descentMult = weightDescentMultiplier.Evaluate(weight);
 
             Vector3 v = rb.linearVelocity;
-            v.y = -descentSpeed * descentMult;
+            v.y = -descentSpeed * descentMult * slowMultiplier;
             rb.linearVelocity = v;
 
             float inputX = input.Move.x;
@@ -102,6 +102,13 @@ namespace Ballast.Gameplay
             {
                 v.x = Mathf.Sign(v.x) * cap;
                 rb.linearVelocity = v;
+            }
+
+            if (!Mathf.Approximately(rb.position.z, 0f))
+            {
+                Vector3 p = rb.position;
+                p.z = 0f;
+                rb.position = p;
             }
         }
 

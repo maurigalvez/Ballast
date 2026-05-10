@@ -43,7 +43,7 @@ namespace Ballast.Gameplay
         protected virtual void Start()
         {
             ApplyRingColor(allowColor);
-            if (label != null) label.text = $"MAX {maxWeight}";
+            if (label != null) label.text = $"MAX {maxWeight} KG";
         }
 
         protected virtual void OnTriggerEnter(Collider other)
@@ -70,6 +70,7 @@ namespace Ballast.Gameplay
                 rb.AddForce(push.normalized * blockKnockback, ForceMode.Impulse);
             }
             StartCoroutine(FlashRed());
+            if (GameManager.Instance != null) GameManager.Instance.NotifyWeightGateBlocked(this);
         }
 
         protected virtual void Open()
@@ -97,6 +98,10 @@ namespace Ballast.Gameplay
 
         public void NotifyApproach()
         {
+            float weight = WeightSystem.Instance != null ? WeightSystem.Instance.CurrentWeight : 0f;
+            if (!IsOpen && weight > maxWeight && GameManager.Instance != null)
+                GameManager.Instance.NotifyWeightGateBlocked(this);
+
             if (approachFired) return;
             approachFired = true;
             OnApproach?.Invoke(this);

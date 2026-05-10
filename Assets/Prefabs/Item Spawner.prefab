@@ -57,8 +57,12 @@ MonoBehaviour:
   verticalSpacingMax: 12
   lateralRange: 3
   tunnelZ: 0
-  totalManifestItems: 5
-  manifestBias: 0.4
+  manifestSpawnPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   wallLayer:
     serializedVersion: 2
     m_Bits: 576

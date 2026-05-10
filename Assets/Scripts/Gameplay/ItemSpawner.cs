@@ -19,8 +19,8 @@ namespace Ballast.Gameplay
         [SerializeField] private float tunnelZ = 0f;
 
         [Header("Manifest schedule")]
-        [SerializeField, Min(0)] private int totalManifestItems = 5;
-        [SerializeField, Range(0f, 1f)] private float manifestBias = 0.4f;
+        [Tooltip("One transform per manifest item, paired by index. Each manifest prefab spawns once at its transform when the diver descends near it.")]
+        [SerializeField] private Transform[] manifestSpawnPoints;
 
         [Header("Wall avoidance")]
         [SerializeField] private LayerMask wallLayer;
@@ -31,13 +31,15 @@ namespace Ballast.Gameplay
         [SerializeField] private float despawnAboveDiver = 30f;
 
         private float nextSpawnY;
-        private int manifestSpawned;
         private readonly List<ItemPickup> live = new();
+        private bool[] manifestSpawned;
 
         private void Start()
         {
             if (diver == null) return;
             nextSpawnY = diver.position.y - 5f;
+            int count = manifestSpawnPoints != null ? manifestSpawnPoints.Length : 0;
+            manifestSpawned = new bool[count];
         }
 
         private void Update()
@@ -46,10 +48,13 @@ namespace Ballast.Gameplay
             if (GameManager.Instance != null && GameManager.Instance.State != RunState.Running) return;
 
             float frontier = diver.position.y - spawnAheadDistance;
+
+            SpawnManifestNearFrontier(frontier);
+
             int safety = 16;
             while (nextSpawnY > frontier && safety-- > 0)
             {
-                SpawnOne(nextSpawnY);
+                SpawnNonManifest(nextSpawnY);
                 nextSpawnY -= Random.Range(verticalSpacingMin, verticalSpacingMax);
             }
 
@@ -66,14 +71,36 @@ namespace Ballast.Gameplay
             }
         }
 
-        private void SpawnOne(float y)
+        private void SpawnManifestNearFrontier(float frontier)
         {
-            bool manifest = ShouldSpawnManifest();
-            IReadOnlyList<ItemData> pool = manifest
-                ? (manifestRegistry != null ? manifestRegistry.Items : null)
-                : nonManifestPool;
-            ItemPickup prefab = manifest ? manifestPrefab : nonManifestPrefab;
-            if (pool == null || pool.Count == 0) return;
+            if (manifestSpawnPoints == null || manifestSpawned == null) return;
+            if (manifestRegistry == null) return;
+            var items = manifestRegistry.Items;
+            if (items == null || items.Count == 0) return;
+
+            int max = Mathf.Min(manifestSpawnPoints.Length, items.Count);
+            for (int i = 0; i < max; i++)
+            {
+                if (manifestSpawned[i]) continue;
+                var point = manifestSpawnPoints[i];
+                if (point == null) continue;
+                if (point.position.y > frontier) continue;
+
+                var data = items[i];
+                if (data == null) { manifestSpawned[i] = true; continue; }
+                var chosenPrefab = data.Prefab != null ? data.Prefab : manifestPrefab;
+                if (chosenPrefab == null) { manifestSpawned[i] = true; continue; }
+
+                var instance = Instantiate(chosenPrefab, point.position, Quaternion.identity);
+                instance.Bind(data);
+                live.Add(instance);
+                manifestSpawned[i] = true;
+            }
+        }
+
+        private void SpawnNonManifest(float y)
+        {
+            if (nonManifestPool == null || nonManifestPool.Length == 0) return;
 
             Vector3 pos = default;
             bool placed = false;
@@ -89,32 +116,13 @@ namespace Ballast.Gameplay
             }
             if (!placed) return;
 
-            var data = pool[Random.Range(0, pool.Count)];
-            var chosenPrefab = data.Prefab != null ? data.Prefab : prefab;
+            var data = nonManifestPool[Random.Range(0, nonManifestPool.Length)];
+            if (data == null) return;
+            var chosenPrefab = data.Prefab != null ? data.Prefab : nonManifestPrefab;
             if (chosenPrefab == null) return;
             var instance = Instantiate(chosenPrefab, pos, Quaternion.identity);
             instance.Bind(data);
             live.Add(instance);
-            if (manifest) manifestSpawned++;
-        }
-
-        private bool ShouldSpawnManifest()
-        {
-            bool manifestQuotaLeft = manifestSpawned < totalManifestItems;
-            bool hasNonManifest = nonManifestPool != null && nonManifestPool.Length > 0 && PoolHasUsablePrefab(nonManifestPool, nonManifestPrefab);
-            if (!manifestQuotaLeft) return false;
-            if (!hasNonManifest) return true;
-            return Random.value < manifestBias;
-        }
-
-        private static bool PoolHasUsablePrefab(ItemData[] pool, ItemPickup fallback)
-        {
-            if (fallback != null) return true;
-            for (int i = 0; i < pool.Length; i++)
-            {
-                if (pool[i] != null && pool[i].Prefab != null) return true;
-            }
-            return false;
         }
     }
 }

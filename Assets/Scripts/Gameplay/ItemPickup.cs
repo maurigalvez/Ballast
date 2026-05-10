@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace Ballast.Gameplay
 {
@@ -11,6 +12,7 @@ namespace Ballast.Gameplay
         [SerializeField] private AudioClip pickupClip;
         [SerializeField] private AudioClip keyPickupClip;
         [SerializeField, Range(0f, 1f)] private float pickupVolume = 1f;
+        [SerializeField] private AudioMixerGroup mixerGroup;
 
         public ItemData Data => data;
         public MeshRenderer Renderer => meshRenderer;
@@ -47,7 +49,17 @@ namespace Ballast.Gameplay
             AudioClip clip = (data != null && data.IsManifestItem && keyPickupClip != null)
                 ? keyPickupClip
                 : pickupClip;
-            if (clip != null) AudioSource.PlayClipAtPoint(clip, transform.position, pickupVolume);
+            if (clip == null) return;
+
+            var go = new GameObject($"PickupSfx_{clip.name}");
+            go.transform.position = transform.position;
+            var src = go.AddComponent<AudioSource>();
+            src.clip = clip;
+            src.volume = pickupVolume;
+            src.spatialBlend = 0f;
+            src.outputAudioMixerGroup = mixerGroup;
+            src.Play();
+            Destroy(go, clip.length / Mathf.Max(0.01f, src.pitch));
         }
 
         public void DisableTrigger()

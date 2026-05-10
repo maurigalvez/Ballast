@@ -181,7 +181,8 @@ MonoBehaviour:
   trigger: {fileID: 83145605968134910}
   pickupClip: {fileID: 0}
   keyPickupClip: {fileID: 8300000, guid: f8b160cacc3736c489b2bc8589620fd7, type: 3}
-  pickupVolume: 1
+  pickupVolume: 0.5
+  mixerGroup: {fileID: 24300002, guid: 3055310b88fee574784616d78de40ce3, type: 2}
 --- !u!65 &83145605968134910
 BoxCollider:
   m_ObjectHideFlags: 0
